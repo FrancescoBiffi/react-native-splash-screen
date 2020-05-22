@@ -3,6 +3,13 @@ package org.devio.rn.splashscreen;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Build;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.devio.rn.splashscreen.animation.AnimationUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -32,6 +39,27 @@ public class SplashScreen {
                     mSplashDialog.setContentView(R.layout.launch_screen);
                     mSplashDialog.setCancelable(false);
 
+                    Animation fadeIn = AnimationUtils.getFadeInAnimation();
+                    RotateAnimation rotate = AnimationUtils.getRotateAnimation();
+
+                    int loadingImageId = activity.getResources().getIdentifier("loadingImage", "id", activity.getPackageName());
+                    int loadingTitleId = activity.getResources().getIdentifier("loadingTitle", "id", activity.getPackageName());
+                    int loadingTextId = activity.getResources().getIdentifier("loadingText", "id", activity.getPackageName());
+                    ImageView image = mSplashDialog.findViewById(loadingImageId);
+                    if(image != null) {
+                        AnimationSet set = new AnimationSet(false);
+                        set.addAnimation(fadeIn);
+                        set.addAnimation(rotate);
+                        image.startAnimation(set);
+                    }
+                    TextView title = mSplashDialog.findViewById(loadingTitleId);
+                    if(title != null) {
+                        title.startAnimation(fadeIn);
+                    }
+                    TextView text = mSplashDialog.findViewById(loadingTextId);
+                    if(text != null) {
+                        text.startAnimation(fadeIn);
+                    }
                     if (!mSplashDialog.isShowing()) {
                         mSplashDialog.show();
                     }
